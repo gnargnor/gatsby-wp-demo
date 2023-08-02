@@ -14,12 +14,15 @@ import "../css/@wordpress/block-library/build-style/theme.css"
 import Bio from "../components/bio"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
+import replaceJWPlayer from "../components/jwplayer-transformer"
 
 const BlogPostTemplate = ({ data: { previous, next, post } }) => {
   const featuredImage = {
     data: post.featuredImage?.node?.localFile?.childImageSharp?.gatsbyImageData,
     alt: post.featuredImage?.node?.alt || ``,
   }
+
+  const parsedContent = parse(post.content, { replace: replaceJWPlayer });
 
   return (
     <Layout>
@@ -46,7 +49,7 @@ const BlogPostTemplate = ({ data: { previous, next, post } }) => {
         </header>
 
         {!!post.content && (
-          <section itemProp="articleBody">{parse(post.content)}</section>
+          <section itemProp="articleBody">{parsedContent}</section>
         )}
 
         <hr />
